@@ -37,6 +37,7 @@ function Navbar() {
         <Link to="/login">Login</Link>
         <Link to="/order">Commander</Link>
         <Link to="/menu">Menu</Link> {/* 👈 ajout du lien Menu */}
+        <Link to="/admin">Admin</Link> {/* 👈 ajout */}
       </NavLinks>
     </NavbarContainer>
   );
