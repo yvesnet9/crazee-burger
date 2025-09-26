@@ -36,6 +36,7 @@ function Navbar() {
       <NavLinks>
         <Link to="/login">Login</Link>
         <Link to="/order">Commander</Link>
+        <Link to="/menu">Menu</Link> {/* 👈 ajout du lien Menu */}
       </NavLinks>
     </NavbarContainer>
   );
