@@ -37,51 +37,26 @@ const Content = styled.div`
   border-radius: 6px;
 `;
 
-const ProductList = styled.ul`
+const OrderList = styled.ul`
   list-style: none;
   padding: 0;
 `;
 
-const ProductItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  background: #f8f8f8;
+const OrderItem = styled.li`
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: #f1f1f1;
   border-radius: 4px;
-`;
-
-const Button = styled.button`
-  padding: 0.25rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background: ${({ variant }) =>
-    variant === "danger" ? "#dc3545" : "#28a745"};
-  color: white;
-
-  &:hover {
-    background: ${({ variant }) =>
-      variant === "danger" ? "#a71d2a" : "#1e7e34"};
-  }
 `;
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("produits");
-  const [products, setProducts] = useState(["Burger Classic", "Burger Cheese"]);
-  const [newProduct, setNewProduct] = useState("");
 
-  const handleAdd = () => {
-    if (newProduct.trim() !== "") {
-      setProducts([...products, newProduct]);
-      setNewProduct("");
-    }
-  };
-
-  const handleDelete = (index) => {
-    setProducts(products.filter((_, i) => i !== index));
-  };
+  const [orders] = useState([
+    { id: 1, client: "Alice", items: ["Burger Classic", "Frites"] },
+    { id: 2, client: "Bob", items: ["Cheese Burger", "Coca-Cola"] },
+    { id: 3, client: "Charlie", items: ["Double Burger", "Milkshake"] },
+  ]);
 
   return (
     <Container>
@@ -105,31 +80,22 @@ function AdminPage() {
         {activeTab === "produits" && (
           <>
             <h2>Gestion des produits</h2>
-            <input
-              type="text"
-              value={newProduct}
-              onChange={(e) => setNewProduct(e.target.value)}
-              placeholder="Nom du produit"
-            />
-            <Button onClick={handleAdd}>Ajouter</Button>
-
-            <ProductList>
-              {products.map((p, index) => (
-                <ProductItem key={index}>
-                  {p}
-                  <Button variant="danger" onClick={() => handleDelete(index)}>
-                    Supprimer
-                  </Button>
-                </ProductItem>
-              ))}
-            </ProductList>
+            <p>(Fonctionnalité déjà implémentée en F08)</p>
           </>
         )}
 
         {activeTab === "commandes" && (
           <>
-            <h2>Gestion des commandes</h2>
-            <p>À implémenter plus tard 🚀</p>
+            <h2>Liste des commandes</h2>
+            <OrderList>
+              {orders.map((order) => (
+                <OrderItem key={order.id}>
+                  <strong>Commande #{order.id}</strong> – {order.client}
+                  <br />
+                  Produits : {order.items.join(", ")}
+                </OrderItem>
+              ))}
+            </OrderList>
           </>
         )}
       </Content>
