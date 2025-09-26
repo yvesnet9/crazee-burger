@@ -5,134 +5,70 @@ const Container = styled.div`
   padding: 2rem;
 `;
 
-const Title = styled.h1`
-  margin-bottom: 1.5rem;
-  color: #333;
-`;
-
-const Tabs = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
-
-const TabButton = styled.button`
-  padding: 0.5rem 1.25rem;
-  border: none;
-  border-radius: 4px;
-  background-color: ${({ active }) => (active ? "#007bff" : "#e0e0e0")};
-  color: ${({ active }) => (active ? "white" : "#333")};
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: ${({ active }) => (active ? "#0056b3" : "#cfcfcf")};
-  }
-`;
-
-const Content = styled.div`
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-`;
-
 const ProductList = styled.ul`
   list-style: none;
   padding: 0;
 `;
 
 const ProductItem = styled.li`
+  margin-bottom: 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  gap: 1rem;
+`;
+
+const Input = styled.input`
   padding: 0.5rem;
-  background: #f8f8f8;
-  border-radius: 4px;
 `;
 
 const Button = styled.button`
-  padding: 0.25rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background: ${({ variant }) =>
-    variant === "danger" ? "#dc3545" : "#28a745"};
+  padding: 0.5rem 1rem;
+  background: #007bff;
   color: white;
+  border: none;
+  cursor: pointer;
 
   &:hover {
-    background: ${({ variant }) =>
-      variant === "danger" ? "#a71d2a" : "#1e7e34"};
+    background: #0056b3;
   }
 `;
 
 function AdminPage() {
-  const [activeTab, setActiveTab] = useState("produits");
-  const [products, setProducts] = useState(["Burger Classic", "Burger Cheese"]);
-  const [newProduct, setNewProduct] = useState("");
+  const [products, setProducts] = useState([
+    { id: 1, name: "Burger Classique", price: 5 },
+    { id: 2, name: "Cheeseburger", price: 6 },
+  ]);
 
-  const handleAdd = () => {
-    if (newProduct.trim() !== "") {
-      setProducts([...products, newProduct]);
-      setNewProduct("");
-    }
-  };
-
-  const handleDelete = (index) => {
-    setProducts(products.filter((_, i) => i !== index));
+  const handleEdit = (id, field, value) => {
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? { ...p, [field]: field === "price" ? Number(value) : value }
+          : p
+      )
+    );
   };
 
   return (
     <Container>
-      <Title>Admin Panel</Title>
-      <Tabs>
-        <TabButton
-          active={activeTab === "produits"}
-          onClick={() => setActiveTab("produits")}
-        >
-          Produits
-        </TabButton>
-        <TabButton
-          active={activeTab === "commandes"}
-          onClick={() => setActiveTab("commandes")}
-        >
-          Commandes
-        </TabButton>
-      </Tabs>
-
-      <Content>
-        {activeTab === "produits" && (
-          <>
-            <h2>Gestion des produits</h2>
-            <input
+      <h1>Panel Admin – Édition Produits</h1>
+      <ProductList>
+        {products.map((p) => (
+          <ProductItem key={p.id}>
+            <Input
               type="text"
-              value={newProduct}
-              onChange={(e) => setNewProduct(e.target.value)}
-              placeholder="Nom du produit"
+              value={p.name}
+              onChange={(e) => handleEdit(p.id, "name", e.target.value)}
             />
-            <Button onClick={handleAdd}>Ajouter</Button>
-
-            <ProductList>
-              {products.map((p, index) => (
-                <ProductItem key={index}>
-                  {p}
-                  <Button variant="danger" onClick={() => handleDelete(index)}>
-                    Supprimer
-                  </Button>
-                </ProductItem>
-              ))}
-            </ProductList>
-          </>
-        )}
-
-        {activeTab === "commandes" && (
-          <>
-            <h2>Gestion des commandes</h2>
-            <p>À implémenter plus tard 🚀</p>
-          </>
-        )}
-      </Content>
+            <Input
+              type="number"
+              value={p.price}
+              onChange={(e) => handleEdit(p.id, "price", e.target.value)}
+            />
+            <Button>💾 Sauvegarder</Button>
+          </ProductItem>
+        ))}
+      </ProductList>
     </Container>
   );
 }
