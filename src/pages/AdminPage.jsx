@@ -1,9 +1,28 @@
-// src/pages/AdminPage.jsx
+import { useState } from "react";
+
 function AdminPage() {
+  const [activeTab, setActiveTab] = useState("produits");
+
   return (
     <div>
       <h1>Admin Panel</h1>
-      <p>Bienvenue sur la page Admin. Gestion du menu à venir 🚀</p>
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+        <button onClick={() => setActiveTab("produits")}>Produits</button>
+        <button onClick={() => setActiveTab("commandes")}>Commandes</button>
+      </div>
+
+      {activeTab === "produits" && (
+        <div>
+          <h2>Gestion des produits</h2>
+          <p>Liste et actions sur les produits.</p>
+        </div>
+      )}
+      {activeTab === "commandes" && (
+        <div>
+          <h2>Gestion des commandes</h2>
+          <p>Liste et actions sur les commandes.</p>
+        </div>
+      )}
     </div>
   );
 }
