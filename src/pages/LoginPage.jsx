@@ -1,4 +1,21 @@
 import { useState } from "react";
+import styled from "styled-components";
+
+// 🔹 Définition d’un bouton stylé avec styled-components
+const Button = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #28a745; /* vert */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1e7e34; /* vert plus foncé */
+  }
+`;
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,7 +52,8 @@ function LoginPage() {
           />
         </div>
 
-        <button type="submit">Se connecter</button>
+        {/* 🔹 Ici on utilise le bouton stylé */}
+        <Button type="submit">Se connecter</Button>
       </form>
     </div>
   );
