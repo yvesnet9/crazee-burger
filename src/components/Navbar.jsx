@@ -1,5 +1,7 @@
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { auth } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -19,9 +21,14 @@ const NavLinks = styled.div`
   display: flex;
   gap: 1rem;
 
-  a {
+  a,
+  button {
     color: white;
     text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 
     &:hover {
       text-decoration: underline;
@@ -30,15 +37,27 @@ const NavLinks = styled.div`
 `;
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("✅ Utilisateur déconnecté");
+      navigate("/login");
+    } catch (error) {
+      console.error("Erreur de déconnexion :", error);
+    }
+  };
+
   return (
     <NavbarContainer>
       <Logo>🍔 CrazeeBurger</Logo>
       <NavLinks>
         <Link to="/login">Login</Link>
         <Link to="/order">Commander</Link>
-        <Link to="/menu">Menu</Link> {/* 👈 ajout du lien Menu */}
-        <Link to="/admin">Admin</Link> {/* 👈 ajout */}
-        <Link to="/basket">Panier</Link>
+        <Link to="/menu">Menu</Link>
+        <Link to="/admin">Admin</Link>
+        <button onClick={handleLogout}>Déconnexion</button>
       </NavLinks>
     </NavbarContainer>
   );
