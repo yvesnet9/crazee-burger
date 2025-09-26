@@ -38,6 +38,7 @@ function Navbar() {
         <Link to="/order">Commander</Link>
         <Link to="/menu">Menu</Link> {/* 👈 ajout du lien Menu */}
         <Link to="/admin">Admin</Link> {/* 👈 ajout */}
+        <Link to="/basket">Panier</Link>
       </NavLinks>
     </NavbarContainer>
   );

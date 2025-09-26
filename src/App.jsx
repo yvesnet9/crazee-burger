@@ -4,7 +4,8 @@ import OrderPage from "./pages/OrderPage";
 import ErrorPage from "./pages/ErrorPage";
 import Navbar from "./components/Navbar"; // 👈 import Navbar
 import MenuPage from "./pages/MenuPage"; // 👈 import
-import AdminPage from "./pages/AdminPage"; // 👈 import
+import AdminPage from "./pages/AdminPage"; // 👈
+import BasketPage from "./pages/BasketPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/menu" element={<MenuPage />} /> {/* 👈 nouvelle route */}
         <Route path="/admin" element={<AdminPage />} />{" "}
+        <Route path="/basket" element={<BasketPage />} />
         {/* 👈 nouvelle route */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
