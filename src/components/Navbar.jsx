@@ -1,16 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
+// src/components/Navbar.jsx
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebaseConfig";
-import { useAuth } from "../context/AuthContext"; // ✅ on utilise ton hook
+import { useAuth } from "../context/AuthContext";
 
 const NavbarContainer = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #222;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #333;
   color: white;
+  z-index: 1000;
 `;
 
 const Logo = styled.div`
@@ -38,28 +42,21 @@ const NavLinks = styled.div`
 `;
 
 function Navbar() {
-  const navigate = useNavigate();
-  const { user, isAdmin } = useAuth(); // ✅ user & isAdmin dispo partout
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      console.log("✅ Utilisateur déconnecté");
-      navigate("/login");
-    } catch (error) {
-      console.error("Erreur de déconnexion :", error);
-    }
-  };
+  const { user, isAdmin, logout } = useAuth();
 
   return (
     <NavbarContainer>
       <Logo>🍔 CrazeeBurger</Logo>
       <NavLinks>
-        {!user && <Link to="/login">Login</Link>}
-        <Link to="/order">Commander</Link>
         <Link to="/menu">Menu</Link>
+        <Link to="/cart">Panier</Link>
+        {user && <Link to="/orders">Mes commandes</Link>}
         {isAdmin && <Link to="/admin">Admin</Link>}
-        {user && <button onClick={handleLogout}>Déconnexion</button>}
+        {!user ? (
+          <Link to="/login">Login</Link>
+        ) : (
+          <button onClick={logout}>Déconnexion</button>
+        )}
       </NavLinks>
     </NavbarContainer>
   );
