@@ -1,19 +1,23 @@
-import { createContext, useEffect, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-
-      // 🎯 Vérifie si l'email correspond à l’admin
-      setIsAdmin(currentUser?.email === "admin@crazeeburger.com");
+      // ✅ règle admin simple : email spécifique
+      if (currentUser?.email === "admin@crazeeburger.com") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => unsubscribe();
@@ -24,6 +28,7 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export default AuthContext;
+// ✅ Hook personnalisé pour consommer le contexte
+export const useAuth = () => useContext(AuthContext);
