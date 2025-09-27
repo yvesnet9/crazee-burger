@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../firebaseConfig";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -38,6 +39,14 @@ const NavLinks = styled.div`
 
 function Navbar() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -53,11 +62,11 @@ function Navbar() {
     <NavbarContainer>
       <Logo>🍔 CrazeeBurger</Logo>
       <NavLinks>
-        <Link to="/login">Login</Link>
+        {!user && <Link to="/login">Login</Link>}
         <Link to="/order">Commander</Link>
         <Link to="/menu">Menu</Link>
         <Link to="/admin">Admin</Link>
-        <button onClick={handleLogout}>Déconnexion</button>
+        {user && <button onClick={handleLogout}>Déconnexion</button>}
       </NavLinks>
     </NavbarContainer>
   );
