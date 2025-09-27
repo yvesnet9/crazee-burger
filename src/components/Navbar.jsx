@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext"; // ✅ on utilise ton hook
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -39,14 +39,7 @@ const NavLinks = styled.div`
 
 function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+  const { user, isAdmin } = useAuth(); // ✅ user & isAdmin dispo partout
 
   const handleLogout = async () => {
     try {
@@ -65,7 +58,7 @@ function Navbar() {
         {!user && <Link to="/login">Login</Link>}
         <Link to="/order">Commander</Link>
         <Link to="/menu">Menu</Link>
-        <Link to="/admin">Admin</Link>
+        {isAdmin && <Link to="/admin">Admin</Link>}
         {user && <button onClick={handleLogout}>Déconnexion</button>}
       </NavLinks>
     </NavbarContainer>

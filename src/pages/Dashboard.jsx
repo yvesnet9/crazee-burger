@@ -2,7 +2,7 @@ import { useAuth } from "../context/useAuth";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
-function AdminPage() {
+function Dashboard() {
   const { user } = useAuth();
 
   const handleLogout = async () => {
@@ -16,11 +16,11 @@ function AdminPage() {
 
   return (
     <div>
-      <h1>Espace Administrateur 👑</h1>
-      <p>Connecté en tant que : {user?.email}</p>
+      <h1>Bienvenue sur ton espace utilisateur 🎉</h1>
+      <p>Email connecté : {user?.email}</p>
       <button onClick={handleLogout}>Se déconnecter</button>
     </div>
   );
 }
 
-export default AdminPage;
+export default Dashboard;

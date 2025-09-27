@@ -1,43 +1,30 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import LoginForm from "../components/LoginForm";
 
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("✅ Utilisateur connecté !");
+      console.log("Tentative login avec:", email, password);
       setError("");
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("✅ Connexion réussie !");
+      navigate("/order"); // on teste redirection vers /order plutôt que /
     } catch (err) {
-      console.error("Erreur de connexion :", err.message);
-      setError("Identifiants invalides");
+      console.error("❌ Erreur Firebase:", err.message);
+      setError("Échec de la connexion : " + err.message);
     }
   };
 
   return (
     <div>
       <h1>Connexion</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Se connecter</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <LoginForm onSubmit={handleLogin} error={error} />
     </div>
   );
 }
