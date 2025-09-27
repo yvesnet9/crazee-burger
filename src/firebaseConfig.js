@@ -1,22 +1,23 @@
-// src/firebaseConfig.js
-// ⚠️ Remplace les valeurs par celles de ton projet Firebase (dans la console Firebase)
-
+// Import Firebase v9 (modular)
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
+// ⚠️ Remplace les valeurs par celles de ton projet Firebase
 const firebaseConfig = {
-  apiKey: "VOTRE_API_KEY",
-  authDomain: "VOTRE_PROJET.firebaseapp.com",
-  projectId: "VOTRE_PROJECT_ID",
-  storageBucket: "VOTRE_PROJECT_ID.appspot.com",
-  messagingSenderId: "VOTRE_ID",
-  appId: "VOTRE_APP_ID",
+  apiKey: "AIzaSyBUYpfsz0_2KuS3hpNir2ErQu09vUSk9i8",
+  authDomain: "crazee-burger-fe456.firebaseapp.com",
+  projectId: "crazee-burger-fe456",
+  storageBucket: "crazee-burger-fe456.firebasestorage.app",
+  messagingSenderId: "574964132259",
+  appId: "1:574964132259:web:91cf0ed88a666b5103d216TON_APP_ID",
 };
 
-// Initialisation Firebase
+// Initialise Firebase
 const app = initializeApp(firebaseConfig);
 
-// Export Firestore
-export const db = getFirestore(app);
+// Export des services pour les utiliser ailleurs
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+export default app;

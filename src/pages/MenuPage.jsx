@@ -1,57 +1,44 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
-const Container = styled.div`
-  padding: 2rem;
-`;
+const sampleProducts = [
+  { id: 1, name: "🍔 Burger Classique", price: 5.99 },
+  { id: 2, name: "🍟 Frites", price: 2.99 },
+  { id: 3, name: "🥤 Soda", price: 1.99 },
+];
 
-const ProductList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const ProductItem = styled.li`
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background: #218838;
-  }
-`;
-
-function MenuPage({ addToBasket }) {
-  const products = [
-    { id: 1, name: "Burger Classique", price: 5 },
-    { id: 2, name: "Cheeseburger", price: 6 },
-    { id: 3, name: "Double Burger", price: 8 },
-  ];
+function MenuPage() {
+  const { addToCart } = useCart();
 
   return (
-    <Container>
-      <h1>🍔 Menu</h1>
-      <ProductList>
-        {products.map((p) => (
-          <ProductItem key={p.id}>
-            <span>
-              {p.name} - {p.price} €
-            </span>
-            <Button onClick={() => addToBasket(p)}>Ajouter</Button>
-          </ProductItem>
+    <div style={{ padding: "2rem" }}>
+      <h1>Menu CrazeeBurger</h1>
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {sampleProducts.map((product) => (
+          <li
+            key={product.id}
+            style={{
+              marginBottom: "1rem",
+              padding: "1rem",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+            }}
+          >
+            <strong>{product.name}</strong> - {product.price.toFixed(2)}€
+            <br />
+            <button
+              onClick={() => addToCart(product)}
+              style={{
+                marginTop: "0.5rem",
+                padding: "0.5rem 1rem",
+                cursor: "pointer",
+              }}
+            >
+              Ajouter au panier
+            </button>
+          </li>
         ))}
-      </ProductList>
-      <Link to="/basket">Voir le panier</Link>
-    </Container>
+      </ul>
+    </div>
   );
 }
 
